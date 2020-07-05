@@ -6,8 +6,8 @@ function theme_files() {
     wp_enqueue_script('main-university-js', 'http://localhost:3000/bundled.js', NULL, '1.0', true);
   } else {
     wp_enqueue_script('our-vendors-js', get_theme_file_uri('/bundled-assets/vendors~scripts.eb459030a4410eb492af.js'), NULL, '1.0', true);
-    wp_enqueue_script('main-theme-js', get_theme_file_uri('/bundled-assets/scripts.dc4c3e8fbe03b2e1530c.js'), NULL, '1.0', true);
-    wp_enqueue_style('our-main-styles', get_theme_file_uri('/bundled-assets/styles.dc4c3e8fbe03b2e1530c.css'));
+    wp_enqueue_script('main-theme-js', get_theme_file_uri('/bundled-assets/scripts.9bdffc61f3da3fbb023a.js'), NULL, '1.0', true);
+    wp_enqueue_style('our-main-styles', get_theme_file_uri('/bundled-assets/styles.9bdffc61f3da3fbb023a.css'));
   }
 
   wp_localize_script('main-theme-js', 'themeData', array(
@@ -67,6 +67,10 @@ return $urls;
 }
 
 //Remove Gutenberg Block Library CSS from loading on the frontend
+
+// Fully Disable Gutenberg editor.
+add_filter('use_block_editor_for_post_type', '__return_false', 10);
+
 function smartwp_remove_wp_block_library_css(){
  wp_dequeue_style( 'wp-block-library' );
  wp_dequeue_style( 'wp-block-library-theme' );
