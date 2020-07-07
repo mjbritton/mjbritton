@@ -1,6 +1,7 @@
 <?php
 
 require_once( __DIR__ . '/func/theme-support.php');
+require_once( __DIR__ . '/func/theme-customiser.php');
 require_once( __DIR__ . '/func/disable-blocks.php');
 require_once( __DIR__ . '/func/disable-emoji.php');
 
