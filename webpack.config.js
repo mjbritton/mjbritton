@@ -13,6 +13,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const autoprefixer = require('autoprefixer');
 const fse = require('fs-extra');
 
 const postCSSPlugins = [
@@ -57,7 +58,15 @@ let cssConfig = {
 	test : /\.s[ac]ss$/i,
 	use  : [
 		'css-loader?url=false',
-		{ loader: 'sass-loader' }
+		{
+			loader  : 'postcss-loader',
+			options : {
+				plugins : () => [
+					autoprefixer()
+				]
+			}
+		},
+		'sass-loader'
 	]
 };
 
