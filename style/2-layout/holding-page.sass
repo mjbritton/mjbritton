@@ -1,14 +1,21 @@
 .holding-page
-
     &__content
+        position: absolute
+        height: 100%
+        width: 100%
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
         font-family: sans-serif
         color: rgba(0,0,0,0.7)
         background: white
         padding: 10px
         margin: auto
-        width: 100%
-        height: 100vh
         text-align: center
+        flex-direction: column
+        align-objects: stretch
+        justify-content: space-between
 
         @include small
             padding: 20px
@@ -55,11 +62,4 @@
     &__copyright
         text-align: center
         width: 100%
-        display: block
-        margin: 20px auto 0
-        position: absolute
-        bottom: 0px
-
-        @include small
-            margin: 100px auto 20px
-            position: relative
+        margin: 0 auto
