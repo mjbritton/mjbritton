@@ -1,5 +1,9 @@
 <?php get_header(); ?>
-
+<div class="loader">
+    <div class="loader__logo animation__heartbeat--quick">
+        <?php echo file_get_contents( get_stylesheet_directory_uri() . '/images/logo.svg' ); ?>
+    </div>
+</div>
 <div class="container">
     <div class="holding-page__content">
         <div class="logo">
@@ -14,5 +18,7 @@
 
     </div>
 </div>
+
+
 
 <?php get_footer(); ?>
