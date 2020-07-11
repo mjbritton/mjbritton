@@ -2,10 +2,16 @@ import $ from 'jquery';
 
 class mjbPreLoader {
 	constructor() {
-		window.addEventListener('load', function() {
+		if (sessionStorage.getItem('dontLoad') == null) {
+			window.addEventListener('load', function() {
+				const loader = document.querySelector('.loader');
+				sessionStorage.setItem('dontLoad', 'true');
+				loader.className += ' loader--fade'; // class "loader hidden"
+			});
+		} else {
 			const loader = document.querySelector('.loader');
-			loader.className += ' loader--hidden'; // class "loader hidden"
-		});
+			loader.className += ' loader--hidden';
+		}
 	}
 }
 
