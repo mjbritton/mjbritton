@@ -18,6 +18,18 @@
             'section' => 'options',
             'priority' => 1
         ));
+
+        $wp_customize->add_setting('holdingpage', array(
+            'default' => _x('', ''),
+            'type' => 'theme_mod'
+        ));
+
+        $wp_customize->add_control('holdingpage', array(
+            'label' => __('Activate holding page', ''),
+            'section' => 'options',
+            'type' => 'checkbox',
+            'priority' => 2
+        ));
     }
 
     add_action('customize_register', 'mjb_customize_register');
