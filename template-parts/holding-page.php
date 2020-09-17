@@ -1,5 +1,5 @@
-<div class="holding-page flex">
-  <div class="holding-page__content flex">
+<div class="holding-page">
+  <div class="holding-page__content">
     <div class="logo">
       <?php echo file_get_contents(get_stylesheet_directory_uri() . '/images/logo.svg'); ?>
     </div>
