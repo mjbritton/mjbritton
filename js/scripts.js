@@ -1,9 +1,9 @@
-import '../style/app.sass';
-import 'jquery';
+import "../style/app.sass";
+import "jquery";
 
 // Modules and classes
 
-import mjbPreLoader from './modules/Preloader';
+import mjbPreLoader from "./modules/Preloader";
 
 // Initiate new modules and classes
 

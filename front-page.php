@@ -1,18 +1,18 @@
-<?php get_header(); ?>
+<?php get_header();?>
 
-<?php 
+<?php
 
 $holdingpage = get_theme_mod('holdingpage');
 
 if ($holdingpage == true) {
 
-get_template_part('/template-parts/holding-page');
+    get_template_part('/template-parts/holding-page');
 
- } else; {
+} else {
+    ;
+}
+{
 
 };
 
-
-
-
-get_footer(); ?>
+get_footer();?>

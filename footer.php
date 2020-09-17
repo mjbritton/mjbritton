@@ -2,21 +2,25 @@
 
 $googleAnalytics = get_theme_mod('options_GA');
 
-if ($googleAnalytics != '') { ?>
+if ($googleAnalytics != '') {?>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $googleAnalytics ?>"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $googleAnalytics ?>"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
 
-      gtag('config', '<?php echo $googleAnalytics ?>');
-    </script>
+function gtag() {
+    dataLayer.push(arguments);
+}
+gtag('js', new Date());
 
-    <?php } else {}
+gtag('config', '<?php echo $googleAnalytics ?>');
+</script>
+
+<?php } else {}
 
 ?>
 
 </body>
+
 </html>
