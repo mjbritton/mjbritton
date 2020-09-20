@@ -9,44 +9,50 @@
 */
 
 const currentTask = process.env.npm_lifecycle_event;
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
-const autoprefixer = require('autoprefixer');
-const fse = require('fs-extra');
+const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const {
+	CleanWebpackPlugin
+} = require("clean-webpack-plugin");
+const ManifestPlugin = require("webpack-manifest-plugin");
+const autoprefixer = require("autoprefixer");
+const fse = require("fs-extra");
+const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 
 const postCSSPlugins = [
-	require('postcss-import'),
-	require('postcss-mixins'),
-	require('postcss-simple-vars'),
-	require('postcss-nested'),
-	require('postcss-hexrgba'),
-	require('postcss-color-function'),
-	require('autoprefixer')
+	require("postcss-import"),
+	require("postcss-mixins"),
+	require("postcss-simple-vars"),
+	require("postcss-nested"),
+	require("postcss-hexrgba"),
+	require("postcss-color-function"),
+	require("autoprefixer")
 ];
 
 class RunAfterCompile {
 	apply(compiler) {
-		compiler.hooks.done.tap('Update functions.php', function() {
+		compiler.hooks.done.tap("Update functions.php", function() {
 			// update functions php here
-			const manifest = fse.readJsonSync('./bundled-assets/manifest.json');
+			const manifest = fse.readJsonSync("./bundled-assets/manifest.json");
 
-			fse.readFile('./functions.php', 'utf8', function(err, data) {
+			fse.readFile("./functions.php", "utf8", function(err, data) {
 				if (err) {
 					console.log(err);
 				}
 
-				const scriptsRegEx = new RegExp("/bundled-assets/scripts.+?'", 'g');
-				const vendorsRegEx = new RegExp("/bundled-assets/vendors.+?'", 'g');
-				const cssRegEx = new RegExp("/bundled-assets/styles.+?'", 'g');
+				const scriptsRegEx = new RegExp("/bundled-assets/scripts.+?'", "g");
+				const vendorsRegEx = new RegExp("/bundled-assets/vendors.+?'", "g");
+				const cssRegEx = new RegExp("/bundled-assets/styles.+?'", "g");
 
 				let result = data
-					.replace(scriptsRegEx, `/bundled-assets/${manifest['scripts.js']}'`)
-					.replace(vendorsRegEx, `/bundled-assets/${manifest['vendors~scripts.js']}'`)
-					.replace(cssRegEx, `/bundled-assets/${manifest['scripts.css']}'`);
+					.replace(scriptsRegEx, `/bundled-assets/${manifest["scripts.js"]}'`)
+					.replace(
+						vendorsRegEx,
+						`/bundled-assets/${manifest["vendors~scripts.js"]}'`
+					)
+					.replace(cssRegEx, `/bundled-assets/${manifest["scripts.css"]}'`);
 
-				fse.writeFile('./functions.php', result, 'utf8', function(err) {
+				fse.writeFile("./functions.php", result, "utf8", function(err) {
 					if (err) return console.log(err);
 				});
 			});
@@ -55,41 +61,40 @@ class RunAfterCompile {
 }
 
 let cssConfig = {
-	test : /\.s[ac]ss$/i,
-	use  : [
-		'css-loader?url=false',
+	test: /\.s[ac]ss$/i,
+	use: [
+		"css-loader?url=false",
 		{
-			loader  : 'postcss-loader',
-			options : {
-				plugins : () => [
-					autoprefixer()
-				]
+			loader: "postcss-loader",
+			options: {
+				plugins: () => [autoprefixer()]
 			}
 		},
-		'sass-loader'
+		"sass-loader"
 	]
 };
 
 let config = {
-	entry   : {
-		scripts : './js/scripts.js'
+	entry: {
+		scripts: "./js/scripts.js"
 	},
-	plugins : [],
-	module  : {
-		rules : [
+	plugins: [],
+	module: {
+		rules: [
 			cssConfig,
 			{
-				test    : /\.js$/,
-				exclude : /(node_modules)/,
-				use     : {
-					loader  : 'babel-loader',
-					options : {
-						presets : [
-							'@babel/preset-react',
-							[
-								'@babel/preset-env',
-								{ targets: { node: '12' } }
-							]
+				test: /\.js$/,
+				exclude: /(node_modules)/,
+				use: {
+					loader: "babel-loader",
+					options: {
+						presets: [
+							"@babel/preset-react",
+							["@babel/preset-env", {
+								targets: {
+									node: "12"
+								}
+							}]
 						]
 					}
 				}
@@ -98,66 +103,78 @@ let config = {
 	}
 };
 
-if (currentTask == 'devFast') {
-	config.devtool = 'source-map';
-	cssConfig.use.unshift('style-loader');
+if (currentTask == "devFast") {
+	config.devtool = "source-map";
+	cssConfig.use.unshift("style-loader");
 	config.output = {
-		filename   : 'bundled.js',
-		publicPath : 'http://localhost:3000/'
+		filename: "bundled.js",
+		publicPath: "http://localhost:3000/"
 	};
 	config.devServer = {
-		before                : function(app, server) {
+		before: function(app, server) {
 			/*
-        If you want the browser to also perform a traditional refresh
-        after a save to a JS file you can modify the line directly
-        below this comment to look like this instead. I'm using this approach
-        instead of just disabling Hot Module Replacement beacuse this way our
-        CSS updates can still happen immediately without a page refresh.
+			  If you want the browser to also perform a traditional refresh
+			  after a save to a JS file you can modify the line directly
+			  below this comment to look like this instead. I'm using this approach
+			  instead of just disabling Hot Module Replacement beacuse this way our
+			  CSS updates can still happen immediately without a page refresh.
 
-        If you're using a slower computer and the new bundle is not ready
-        by the time this is reloading the browser you can always just set the 
-        "hot" property a few lines below this to false instead of true. That
-        will work on all computers and the only trade off is the browser will
-        perform a traditional refresh even for CSS changes as well.
-        */
+			  If you're using a slower computer and the new bundle is not ready
+			  by the time this is reloading the browser you can always just set the 
+			  "hot" property a few lines below this to false instead of true. That
+			  will work on all computers and the only trade off is the browser will
+			  perform a traditional refresh even for CSS changes as well.
+			  */
 
 			// server._watch(["./**/*.php", "./**/*.js"])
-			server._watch([
-				'./**/*.php',
-				'!./functions.php'
-			]);
+			server._watch(["./**/*.php", "!./functions.php"]);
 		},
-		public                : 'http://localhost:3000',
-		publicPath            : 'http://localhost:3000/',
-		disableHostCheck      : true,
-		contentBase           : path.join(__dirname),
-		contentBasePublicPath : 'http://localhost:3000/',
-		hot                   : true,
-		port                  : 3000,
-		headers               : {
-			'Access-Control-Allow-Origin' : '*'
+		public: "http://localhost:3000",
+		publicPath: "http://localhost:3000/",
+		disableHostCheck: true,
+		contentBase: path.join(__dirname),
+		contentBasePublicPath: "http://localhost:3000/",
+		hot: true,
+		host: "0.0.0.0",
+		port: 3000,
+		headers: {
+			"Access-Control-Allow-Origin": "*"
 		}
 	};
-	config.mode = 'development';
+	config.mode = "development";
+	config.plugins.push(
+		new BrowserSyncPlugin({
+			host: "localhost",
+			port: 3001,
+			proxy: "http://mjbritton.local",
+			watch: false,
+		})
+	);
 }
 
-if (currentTask == 'build' || currentTask == 'buildWatch') {
+if (currentTask == "build" || currentTask == "buildWatch") {
 	cssConfig.use.unshift(MiniCssExtractPlugin.loader);
-	postCSSPlugins.push(require('cssnano'));
+	postCSSPlugins.push(require("cssnano"));
 	config.output = {
-		publicPath    : '/wp-content/themes/mjbritton/bundled-assets/',
-		filename      : '[name].[chunkhash].js',
-		chunkFilename : '[name].[chunkhash].js',
-		path          : path.resolve(__dirname, 'bundled-assets')
+		publicPath: "/wp-content/themes/mjbritton/bundled-assets/",
+		filename: "[name].[chunkhash].js",
+		chunkFilename: "[name].[chunkhash].js",
+		path: path.resolve(__dirname, "bundled-assets")
 	};
-	config.mode = 'production';
+	config.mode = "production";
 	config.optimization = {
-		splitChunks : { chunks: 'all' }
+		splitChunks: {
+			chunks: "all"
+		}
 	};
 	config.plugins.push(
 		new CleanWebpackPlugin(),
-		new MiniCssExtractPlugin({ filename: 'styles.[chunkhash].css' }),
-		new ManifestPlugin({ publicPath: '' }),
+		new MiniCssExtractPlugin({
+			filename: "styles.[chunkhash].css"
+		}),
+		new ManifestPlugin({
+			publicPath: ""
+		}),
 		new RunAfterCompile()
 	);
 }
