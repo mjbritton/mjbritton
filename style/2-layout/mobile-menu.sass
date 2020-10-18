@@ -8,6 +8,9 @@
   cursor: pointer
   transition: all .5s ease-in-out
 
+  +medium
+    display: none
+
   &__burger
     width: 40px
     height: 6px
@@ -29,10 +32,10 @@
       z-index: 5
 
     &::before
-      transform: translateY(-16px)
+      transform: translateY(-13px)
 
     &::after
-      transform: translateY(16px)
+      transform: translateY(13px)
 
 /* ANIMATION
 
@@ -51,13 +54,13 @@
   display: none
   position: absolute
   background: transparent
-  width: 100vw
   height: 100vh
   top: 0
   bottom: 0
   left: 0
   right: 0
   transition: background-color .5s ease-in-out
+  z-index: 4
 
   &__list
     display: block

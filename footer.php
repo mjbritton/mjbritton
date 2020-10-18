@@ -1,4 +1,6 @@
-<?php wp_footer();
+<?php get_template_part('/template-parts/footer');
+
+wp_footer();
 
 $googleAnalytics = get_theme_mod('options_GA');
 
@@ -10,7 +12,7 @@ if ($googleAnalytics != '') {?>
 window.dataLayer = window.dataLayer || [];
 
 function gtag() {
-    dataLayer.push(arguments);
+  dataLayer.push(arguments);
 }
 gtag('js', new Date());
 

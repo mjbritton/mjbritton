@@ -1,0 +1,26 @@
+.header__main-nav
+  display: none
+
+  +medium
+    display: block
+
+.main-nav
+
+  &__list
+    padding-left: 0
+    margin: 0
+    height: 40px
+    list-style: none
+    float: left
+
+    &::last-child
+      margin-right: -20px
+
+  &__item
+    float: left
+    margin-right: 20px
+    font-size: 1rem
+
+  &::after
+    content: ''
+    clear: both

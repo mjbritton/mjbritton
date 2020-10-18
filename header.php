@@ -13,3 +13,5 @@
       <?php echo file_get_contents(get_stylesheet_directory_uri() . '/images/logo.svg'); ?>
     </div>
   </div>
+
+  <?php get_template_part('/template-parts/header');?>

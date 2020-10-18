@@ -1,18 +1,12 @@
 .container 
     width: 100%
+    max-width: 1200px
+    margin: auto
     position: relative
-    padding: 1rem
-
-    @include small
-        max-width: 1200px
-        width: 90%
-        margin: 0 auto
-        padding: 0 1rem
+    padding: 1.5rem
 
     &--narrow
+        max-width: 800px
 
-        @include small
-            max-width: 960px
-            width: 90%
-            margin: 0 auto
-            padding: 0 1rem
+    &--footer
+        padding: 0
