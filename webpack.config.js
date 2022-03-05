@@ -27,7 +27,6 @@ const postCSSPlugins = [
 	require("postcss-nested"),
 	require("postcss-hexrgba"),
 	require("postcss-color-function"),
-	require("autoprefixer")
 ];
 
 class RunAfterCompile {

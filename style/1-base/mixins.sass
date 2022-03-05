@@ -1,16 +1,19 @@
-@mixin tiny 
-  @media (max-width: $tiny)  
-      @content 
+@mixin tiny
+  @media (max-width: $tiny)
+    @content
 
-@mixin small 
-  @media (min-width: $tiny)  
-      @content
+@mixin small
+  @media (min-width: $tiny)
+    @content
 
-@mixin medium 
-  @media (min-width: $small)  
-      @content 
+@mixin medium
+  @media (min-width: $small)
+    @content
 
-@mixin large 
-  @media (min-width: $medium)  
-      @content 
+@mixin large
+  @media (min-width: $medium)
+    @content
 
+@mixin huge
+  @media (min-width: $huge)
+    @content

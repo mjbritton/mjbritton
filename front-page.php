@@ -3,7 +3,7 @@ get_header();
 
 $holdingpage = get_theme_mod('holdingpage');
 
-if ($holdingpage == true) {
+if (!is_user_logged_in() && $holdingpage == true) {
 
     get_template_part('/template-parts/holding-page');
 

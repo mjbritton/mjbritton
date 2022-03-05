@@ -1,6 +1,6 @@
 <div class="holding-page">
   <div class="holding-page__content">
-    <div class="logo">
+    <div class="holding-page__logo">
       <?php echo file_get_contents(get_stylesheet_directory_uri() . '/images/logo.svg'); ?>
     </div>
     <div class="holding-page__text-container">
@@ -11,7 +11,7 @@
           class="holding-page__button animation__heartbeat"><?php echo file_get_contents(get_stylesheet_directory_uri() . '/images/icons/envelope.svg'); ?></span></a>
     </div>
     <div class="holding-page__copyright">
-      <p class="holding-page__text--small">&copy MJBritton Digital and Design 2020</p>
+      <p class="holding-page__text--small">&copy MJBritton Digital and Design 2019-<?php echo date("Y"); ?></p>
     </div>
 
   </div>

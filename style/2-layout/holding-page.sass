@@ -1,68 +1,111 @@
 .holding-page
+    position: absolute
+    width: 100%
+    min-height: 100vh
+    min-height: -webkit-fill-available
+    background: white
+    z-index: 999
+    display: grid
+    align-content: center
+
     &__content
-        position: absolute
-        height: 100%
-        width: 100%
-        top: 0
-        left: 0
-        right: 0
-        bottom: 0
         font-family: $bodyFont
-        background: white
-        padding: 1rem
+        width: 100%
+        min-height: 100vh
+        min-height: -webkit-fill-available
         margin: auto
         text-align: center
         display: flex
         flex-direction: column
+        justify-content: space-between
+
+    &__logo
+        width: 50%
+        margin: 20px auto
 
         @include small
-            padding: 20px
-            max-width: 600px
+            width: 250px
+
+        @include huge
+            width: 500px
+            margin-top: 100px
 
     &__text-container
         flex: 1
+        width: 100%
+        margin: auto
+        padding: 10px
 
     &__header
         font-family: $headerFont
-        width: 80%
-        margin: 1rem auto
-        font-size: 1.5rem
+        font-size: 2rem
 
-        @include small
-            width: 100%
-            font-size: 2rem
+        @include medium
+            font-size: 3.5rem
+
+        @include huge
+            font-size: 10rem
+            margin-top: 10rem
 
     &__text
         width: 90%
         margin: 1rem auto
-        font-size: 1rem
+        font-size: 1.2rem
+        text-align: center
 
-        @include small
-            width: 100%
-            font-size: 1.5rem
+        @include medium
+            font-size: 2rem
+            line-height: 2rem
+            margin: 40px auto
+
+        @include huge
+            font-size: 4rem
+            line-height: 4rem
+            margin: 40px auto
 
         &--small
             font-size: 0.8rem
+            margin: 0
+            color: white
 
-            @include small
+            @include medium
                 font-size: 1rem
 
+            @include huge
+                font-size: 2.5rem
+
     &__button
-        display: block
-        width: 100px
-        height: 100px   
+        display: grid
+        align-items: center
+        width: 75px
+        height: 75px
         background: $mainColor
-        padding: 20px
-        margin: 40px auto
+        padding: 15px
+        margin: 20px auto
         border-radius: 5px
+
+        @include small
+            width: 100px
+            height: 100px
+            padding: 20px
+
+        @include huge
+            width: 300px
+            height: 300px
+            padding: 50px
+            margin-top: 100px
 
         &:hover
             background: grey
 
     &__copyright
-        text-align: center
         width: 100%
-        margin: 0 auto
         color: white
         background: $mainColor
-        margin-bottom: -20px
+        display: flex
+        justify-content: center
+        align-items: center
+        height: 50px
+
+        @include huge
+            height: 100px

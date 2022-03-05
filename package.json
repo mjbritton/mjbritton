@@ -23,11 +23,6 @@
 	],
 	"author": "mjbritton",
 	"license": "ISC",
-	"browserslist": [
-		"last 2 versions",
-		"> 1%",
-		"IE 10"
-	],
 	"devDependencies": {
 		"@babel/core": "^7.17.5",
 		"@babel/preset-env": "^7.16.11",
@@ -46,6 +41,7 @@
 		"postcss-loader": "^6.2.1",
 		"postcss-mixins": "^9.0.2",
 		"postcss-nested": "^5.0.6",
+		"postcss-preset-env": "^7.4.2",
 		"postcss-sass": "^0.5.0",
 		"postcss-simple-vars": "^6.0.3",
 		"sass": "^1.49.9",
