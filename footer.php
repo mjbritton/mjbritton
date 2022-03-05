@@ -4,7 +4,7 @@ wp_footer();
 
 $googleAnalytics = get_theme_mod('options_GA');
 
-if ($googleAnalytics != '') {?>
+if (!is_user_logged_in() && $googleAnalytics != '') {?>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $googleAnalytics ?>"></script>

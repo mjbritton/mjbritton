@@ -15,9 +15,10 @@ function mjb_customize_register($wp_customize)
     ));
 
     $wp_customize->add_control('options_GA', array(
-        'label'    => __('Google Analyitics ID', ''),
-        'section'  => 'options',
-        'priority' => 1,
+        'label'             => __('Google Analyitics ID', ''),
+        'section'           => 'options',
+        'sanitize_callback' => '',
+        'priority'          => 1,
     ));
 
     $wp_customize->add_setting('holdingpage', array(
