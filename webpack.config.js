@@ -10,14 +10,15 @@
 
 const currentTask = process.env.npm_lifecycle_event;
 const path = require("path");
+const pjson = require(path.join(__dirname, 'package.json'));
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const {
 	CleanWebpackPlugin
 } = require("clean-webpack-plugin");
-const ManifestPlugin = require("webpack-manifest-plugin");
+const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 const autoprefixer = require("autoprefixer");
 const fse = require("fs-extra");
-const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
+
 
 const postCSSPlugins = [
 	require("postcss-import"),
@@ -41,15 +42,12 @@ class RunAfterCompile {
 				}
 
 				const scriptsRegEx = new RegExp("/bundled-assets/scripts.+?'", "g");
-				const vendorsRegEx = new RegExp("/bundled-assets/vendors.+?'", "g");
+				const vendorsRegEx = new RegExp("/bundled-assets/vendors~scripts.+?'", "g");
 				const cssRegEx = new RegExp("/bundled-assets/styles.+?'", "g");
 
 				let result = data
 					.replace(scriptsRegEx, `/bundled-assets/${manifest["scripts.js"]}'`)
-					.replace(
-						vendorsRegEx,
-						`/bundled-assets/${manifest["vendors~scripts.js"]}'`
-					)
+					.replace(vendorsRegEx, `/bundled-assets/${manifest["vendors~scripts.js"]}'`)
 					.replace(cssRegEx, `/bundled-assets/${manifest["scripts.css"]}'`);
 
 				fse.writeFile("./functions.php", result, "utf8", function(err) {
@@ -63,11 +61,12 @@ class RunAfterCompile {
 let cssConfig = {
 	test: /\.s[ac]ss$/i,
 	use: [
-		"css-loader?url=false",
+		"css-loader",
 		{
 			loader: "postcss-loader",
 			options: {
-				plugins: () => [autoprefixer()]
+				postcssOptions: {
+				plugins: () => [autoprefixer()]}
 			}
 		},
 		"sass-loader"
@@ -108,48 +107,36 @@ if (currentTask == "devFast") {
 	cssConfig.use.unshift("style-loader");
 	config.output = {
 		filename: "bundled.js",
-		publicPath: "http://localhost:3000/"
+		publicPath: "http://192.168.1.3:3000/"
 	};
 	config.devServer = {
-		before: function(app, server) {
-			/*
-			  If you want the browser to also perform a traditional refresh
-			  after a save to a JS file you can modify the line directly
-			  below this comment to look like this instead. I'm using this approach
-			  instead of just disabling Hot Module Replacement beacuse this way our
-			  CSS updates can still happen immediately without a page refresh.
-
-			  If you're using a slower computer and the new bundle is not ready
-			  by the time this is reloading the browser you can always just set the 
-			  "hot" property a few lines below this to false instead of true. That
-			  will work on all computers and the only trade off is the browser will
-			  perform a traditional refresh even for CSS changes as well.
-			  */
-
-			// server._watch(["./**/*.php", "./**/*.js"])
-			server._watch(["./**/*.php", "!./functions.php"]);
-		},
-		public: "http://localhost:3000",
-		publicPath: "http://localhost:3000/",
-		disableHostCheck: true,
-		contentBase: path.join(__dirname),
-		contentBasePublicPath: "http://localhost:3000/",
-		hot: true,
-		host: "0.0.0.0",
-		port: 3000,
-		headers: {
-			"Access-Control-Allow-Origin": "*"
-		}
-	};
+    watchFiles: ['./**/*.php', '!./functions.php'],
+		static: {
+      directory: path.join(__dirname, 'public'),
+      publicPath: 'http://192.168.1.3:3000/',
+    },
+    watchFiles: ['./**/*.php', '!./functions.php'],
+    open: true,
+    hot: 'only',
+    port: 3000,
+    allowedHosts: 'all',
+    proxy: {
+      '/': {
+        target: pjson.wptheme.proxyURL,
+        secure: false,
+        autoRewrite: true,
+        changeOrigin: true,
+        headers: {
+          'X-ProxiedBy-Webpack' : true,
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
+          "Access-Control_Allow-Credentials": true
+      }
+    },
+    }
+  },
 	config.mode = "development";
-	config.plugins.push(
-		new BrowserSyncPlugin({
-			host: "localhost",
-			port: 3001,
-			proxy: "http://mjbritton.local",
-			watch: false,
-		})
-	);
 }
 
 if (currentTask == "build" || currentTask == "buildWatch") {
@@ -157,23 +144,25 @@ if (currentTask == "build" || currentTask == "buildWatch") {
 	postCSSPlugins.push(require("cssnano"));
 	config.output = {
 		publicPath: "/wp-content/themes/mjbritton/bundled-assets/",
-		filename: "[name].[chunkhash].js",
-		chunkFilename: "[name].[chunkhash].js",
+		filename: "[name].[contenthash].js",
+		chunkFilename: "[name].[contenthash].js",
 		path: path.resolve(__dirname, "bundled-assets")
 	};
 	config.mode = "production";
 	config.optimization = {
+		chunkIds: "named",
 		splitChunks: {
-			chunks: "all"
+			chunks: "all",
+			name: "vendors~scripts"
 		}
 	};
 	config.plugins.push(
 		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin({
-			filename: "styles.[chunkhash].css"
+			filename: "styles.[contenthash].css"
 		}),
-		new ManifestPlugin({
-			publicPath: ""
+		new WebpackManifestPlugin({
+			publicPath: "",
 		}),
 		new RunAfterCompile()
 	);
